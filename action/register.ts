@@ -16,7 +16,15 @@ export async function register(values: z.infer<typeof registerSchema>) {
     const existingUser = await prisma.user.findUnique({
         where:{email}
     })
-    if(existingUser) {
+    const token = await prisma.verificationToken.findFirst({
+        where:{email}
+    })
+    if (existingUser && token) {
+        await prisma.user.delete({
+            where:{email}
+        })
+    }
+    if(existingUser && !token) {
         return{error:"le compte existe déjà"}
     }
     

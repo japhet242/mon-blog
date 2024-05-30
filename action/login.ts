@@ -3,12 +3,11 @@ import { signIn } from "@/auth"
 import prisma from "@/lib/db"
 import { loginSchema } from "@/schemas/zodSchema"
 import { error } from "console"
+import { AuthError } from "next-auth"
 import {z} from"zod"
 
 export async function login(values: z.infer<typeof loginSchema>) {
     const verifield = await loginSchema.safeParse(values)
-    
-    console.log(values)
     if (!verifield.success) {
         return{error:"quelque chose de mal s'est produit"}
     }
@@ -31,7 +30,17 @@ try {
        redirectTo:"/settings"
     })
     return {succes:"email envoyer"}
-} catch (e) {
-
+} catch (error) {
+        if (error instanceof AuthError) {
+           switch (error.type) {
+            case "CredentialsSignin":
+                return {error:"quelque chose s'est produite verifie votre email"}
+                break;
+           
+            default:
+                return{error:"quelque chose s'est mal passé"}
+                break;
+           } 
+        }
 }
   }

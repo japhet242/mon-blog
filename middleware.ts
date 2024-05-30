@@ -1,6 +1,7 @@
 import authConfig from "./auth.config"
 import NextAuth from "next-auth"
-import { apiPrefixRoute, authRoute, publicRoute } from "./routes/routes"
+import { apiPrefixRoute, apiPrefixupload, authRoute, publicRoute } from "./routes/routes"
+import { NextResponse } from "next/server"
 
 const { auth } = NextAuth(authConfig)
  
@@ -10,16 +11,17 @@ export default auth((req) => {
   const isPrefixApiRoute = nextUrl.pathname.startsWith(apiPrefixRoute)
   const isPublicRoute = publicRoute.includes(nextUrl.pathname)
   const isAuthRoute = authRoute.includes(nextUrl.pathname)
+  const isPrefixApiupload = nextUrl.pathname.startsWith(apiPrefixupload)
 
 
-  if (isPrefixApiRoute) {
-    return
+  if (isPrefixApiRoute || isPrefixApiupload) {
+    return NextResponse.next()
   }
   if (isAuthRoute) {
     if (isLoddingIn) {
         return Response.redirect(new URL("/settings",nextUrl))
     }
-    return
+    return 
   }
   if (!isLoddingIn && !isPublicRoute) {
     

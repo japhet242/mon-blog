@@ -15,3 +15,23 @@ export const loginSchema = z.object({
     }),
     email:z.string().email({ message: "Invalid email address" })
   })
+  export const postSchema =  z.object({
+    title:z.string().min(4, {
+        message: "must be at least 4 characters.",
+      }),
+    content: z.string().min(5, {
+      message: "Username must be at least 5 characters.",
+    }),
+    content2: z.string().min(5, {
+      message: "Username must be at least 5 characters.",
+    }).optional(),
+   image:z.string(),
+   image2:z.string().optional(),
+   category :z.string(),
+  })
+  export const newpasswordSchema = z.object({
+    password:z.string().min(5,{message:"must be at least 5 characters."})
+  })
+  export const categorySchema =z.object({
+    name:z.string().min(5,{message:"must be at least 5 characters."})
+  })

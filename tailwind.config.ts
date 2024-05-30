@@ -6,7 +6,7 @@ const config = {
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx,mdx}',
 	],
   prefix: "",
   theme: {
@@ -76,5 +76,8 @@ const config = {
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
-
-export default config
+import { withUt } from "uploadthing/tw";
+ 
+export default withUt({
+...config
+});

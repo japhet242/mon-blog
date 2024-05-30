@@ -5,7 +5,8 @@
 
 export const publicRoute = [
     "/",
-    "/error"
+    "/error",
+    "/api/uploadthing"
 ]
 
 /**
@@ -22,6 +23,7 @@ export const authRoute = [
  * @type {string}
  */
 export const apiPrefixRoute = "/api/auth/"
+export const apiPrefixupload = "/api/uploadthing"
 
 /**
  * route par defaut pour la redirection

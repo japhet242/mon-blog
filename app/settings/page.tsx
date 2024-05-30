@@ -13,7 +13,7 @@ return <div>
         await signOut()
       }}
     >
-      <button type="submit">Sign in</button>
+      <button type="submit">Sign out</button>
     </form>
     {session?.user.image?.length ? <Image src={`${session.user.image}`} alt="photo" width={300} height={300}/>:null}
 </div>
