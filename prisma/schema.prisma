@@ -53,6 +53,9 @@ model User {
   updatedAt  DateTime   @updatedAt
   title      String
   content    String
+  content2   String?
+  image      String
+  image2     String?
   published  Boolean    @default(false)
   author     User       @relation(fields: [authorId], references: [id])
   authorId   String
@@ -73,7 +76,17 @@ model VerificationToken {
   @@unique([email, token])
   @@map("verificationtokens")
 }
+model resetPassworrdToken {
+  id        String @id @default(cuid())
+  email     String
+  token     String
+  expires   DateTime
+ 
+  @@unique([email, token])
+  @@map("vresetPassworrdToken")
+}
 enum Role {
   USER
   ADMIN
 }
+

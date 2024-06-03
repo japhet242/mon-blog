@@ -68,6 +68,9 @@ export function Category (){
         <Button type="submit">Ajouter</Button>
       </form>
     </Form>
+    <div className=" mt-4 text-slate-400 px-2 bg-amber-100">
+      une foie que vous avez ajouter une nouvelle categorie dans la base de donnee reactualiser la page pour que cela soit pris en compte
+    </div>
         </div>
     ) 
 

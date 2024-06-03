@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "./api/uploadthing/core";
-import { Toaster } from "@/components/ui/toaster"
+import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { Toaster } from "@/components/ui/toaster" 
+import { FooterLayout } from "@/components/home/footerLayout";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-[700px] `}>
       <NextSSRPlugin
           /**
            * The `extractRouterConfig` will extract **only** the route configs
@@ -32,7 +33,9 @@ export default function RootLayout({
       <main>{children}</main>
       
         <Toaster />
+        <FooterLayout/>
         </body>
+        
     </html>
   );
 }

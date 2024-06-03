@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { date, z } from "zod"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,167 +12,170 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { postSchema } from "@/schemas/zodSchema"
-import { login } from "@/action/login"
-import { ReactNode, useEffect, useState, useTransition } from "react"
-import { AlertDestructive } from "../ui/AlertDestructive"
-import { AlertSucces } from "../ui/AlertSucces"
-import { useSearchParams } from "next/navigation"
-import Link from "next/link"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { UploadButton } from "@/utils/uploadthing"
-import { UploadComponent } from "./uploadbutton"
-import Image from "next/image"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { postSchema } from "@/schemas/zodSchema";
+import { login } from "@/action/login";
+import { useEffect, useState, useTransition } from "react";
+import { AlertDestructive } from "../ui/AlertDestructive";
+import { AlertSucces } from "../ui/AlertSucces";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { UploadButton } from "@/utils/uploadthing";
+import { UploadComponent } from "./uploadbutton";
+import Image from "next/image";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { selectcategory } from "./selectcategory"
-
+} from "@/components/ui/select";
+import { selectcategory } from "./selectcategory";
+import { postAction } from "@/action/postaction";
+import { UploadButtonComponent } from "./uploadBotton";
 
 export function PostForm() {
   const [isPending, startTransition] = useTransition();
-  const [error , setError] = useState<string |undefined>("")
-  const [succes , setSucces] = useState<string |undefined>("")
-  const [image , setImage] = useState<string |undefined>("")
-  const [image2 , setImage2] = useState<string |undefined>("")
-  const [categories, setCategories] = useState<{ id: string; name: string; }[] | undefined>([]);
-  const paramsUrl = useSearchParams().get("error")
+  const [error, setError] = useState<string | undefined>("");
+  const [succes, setSucces] = useState<string | undefined>("");
+  const [image, setImage] = useState<string | undefined>("");
+  const [image2, setImage2] = useState<string | undefined>("");
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const paramsUrl = useSearchParams().get("error");
+  const router = useRouter()
 
   useEffect(() => {
+
     async function fetchCategories() {
       const data = await selectcategory();
-      setCategories(data);
+      setCategories(data ?? []);
     }
 
     fetchCategories();
-  }, []);;
- console.log(categories)
-  // 1. Define your form.
+  }, []);
   const form = useForm<z.infer<typeof postSchema>>({
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: "",
-      content:"",
-      content2:"",
-      image:"",
-      image2:""
+      content: "",
+      content2: "",
+      categories: "",
     },
-  })
+  });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof postSchema>) {
     startTransition(() => {
-    //   login(values).then(e=>{
-    //   setError(e?.error)
-    //   setSucces(e?.succes)
-    // })
+     postAction({data:values,image,image2}).then(e=>{
+      setSucces(e?.success),
+      setError(e.error)
+     })
+     form.reset()
+      console.log(values);
     });
   }
+
   return (
     <div>
-      <h1 className=" mb-4 mt-2 text-2xl">  Cree un Article</h1>
-       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Titre</FormLabel>
-              <FormControl>
-                <Input placeholder="le shot tv" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-{/* uploadthing */}
-{image?.length ?
- <Image src={image} width={350} height={350} alt={image} /> :
-<UploadComponent urlimage={setImage}/>
-}
-         <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contenu</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {/* image2 */}
-        {image2?.length ?
- <Image src={image2} width={350} height={350} alt={image2} /> :
-<UploadComponent urlimage={setImage2}/>
-}
-         <FormField
-          control={form.control}
-          name="content2"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contenu2</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-  <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Category</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+      <h1 className="mb-4 mt-2 text-2xl">Créer un Article</h1>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Titre</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
+                  <Input placeholder="le shot tv" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {image?.length ? (
+            <div>
+              <Image src={image} width={350} height={350} alt="image téléchargée" />
+            </div>
+            
+          ) : (
+            <UploadComponent urlimage={setImage} />
           )}
-        />
-        <AlertDestructive message={paramsUrl==="OAuthAccountNotLinked"?"un compte existe deja avec se même email esseye avec un autre réseaux social":error}/>
-        <AlertSucces message={succes}/>
-
-        <Button type="submit" className=" w-full">Poster</Button>
-      </form>
-    </Form>
-   
-
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contenu 1</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Parlez-nous un peu de vous"
+                    className="resize-y min-h-[200px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {image2?.length ? (
+            <Image src={image2} width={350} height={350} alt="image téléchargée" />
+          ) : (
+            <UploadComponent urlimage={setImage2} />
+          )}
+          <FormField
+            control={form.control}
+            name="content2"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contenu 2</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Parlez-nous un peu de vous"
+                    className="resize-y min-h-[200px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="categories"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Catégorie</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez une catégorie" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories?.map(category => (
+                      <SelectItem key={category.id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Vous pouvez gérer les catégories dans vos{" "} 
+                  <Link href="/examples/forms">paramètres de catégorie</Link>.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <AlertDestructive message={paramsUrl === "OAuthAccountNotLinked" ? "Un compte existe déjà avec ce même email, essayez avec un autre réseau social" : error} />
+          <AlertSucces message={succes} />
+          <Button type="submit" className="w-full">Poster</Button>
+        </form>
+      </Form>
     </div>
-   
-  )
+  );
 }
-

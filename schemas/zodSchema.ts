@@ -25,13 +25,14 @@ export const loginSchema = z.object({
     content2: z.string().min(5, {
       message: "Username must be at least 5 characters.",
     }).optional(),
-   image:z.string(),
-   image2:z.string().optional(),
-   category :z.string(),
+   categories :z.string(),
   })
   export const newpasswordSchema = z.object({
     password:z.string().min(5,{message:"must be at least 5 characters."})
   })
+  export const resetSchema = z.object({
+    email:z.string().email({ message: "Invalid email address" })
+  })
   export const categorySchema =z.object({
-    name:z.string().min(5,{message:"must be at least 5 characters."})
+    name:z.string().min(3,{message:"must be at least 3 characters."})
   })

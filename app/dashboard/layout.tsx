@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { MdCategory } from "react-icons/md"
+import { MdCategory } from "react-icons/md";
 import { TbCategoryPlus } from "react-icons/tb";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,29 +18,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} container  px-4`}>
-        <header className=" md:flex justify-between">
+   
+      <div className={`${inter.className} container px-4`}>
+        <div>
+          <div className="md:flex justify-between">
             <div className="bg-emerald-400 px-4 min-h-full md:fixed text-white">
-                <div className=" sm:flex">
-                    <Button variant="ghost" size="lg" className=" text-lg underline">
-                    <TbCategoryPlus className=" mx-2"/>
-                     <Link href="/dashboard"> Cree un article</Link>
+              <div className="sm:flex">
+                <Button variant="ghost" size="lg" className="text-lg underline">
+                  <TbCategoryPlus className="mx-2" />
+                  <Link href="/dashboard">Créer un article</Link>
                 </Button>
-                </div>
-                <div>
-                    <Button variant="ghost" className=" text-lg underline">
-                        <MdCategory className=" mx-2"/>
-                 <Link href="/dashboard/category">ajouter des categories</Link>
-               </Button>
-                </div> 
-           </div>
-
-        </header>
-         <main className=" md:absolute right-0">
-        {children}
-       </main>
-        </body>
-    </html>
+              </div>
+              <div>
+                <Button variant="ghost" className="text-lg underline">
+                  <MdCategory className="mx-2" />
+                  <Link href="/dashboard/analitics">Alalitics</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="md:absolute right-0">
+          {children}
+        </div>
+      </div>
+    
   );
 }
