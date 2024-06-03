@@ -1,8 +1,11 @@
+"use client"
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import Image from "next/image"
 import Link from "next/link";
 import { date } from "zod";
 import { SkeletonCard } from "../ui/skeletoncard";
+import { motion } from "framer-motion"
+import { FadeTextDemo } from "../ui/fadetextdemo";
 
 export default function CardRecentPost({ post }: { post: {
   id: string;
@@ -19,9 +22,13 @@ export default function CardRecentPost({ post }: { post: {
    categories: { id: string; name: string; }[]
 } | null}) {
   return (
-        post ?  <div >
+        post ?  <motion.div initial={{opacity:0,scale:1.1}} animate={{opacity:1,scale:1}} transition={{
+            ease: "linear",
+            duration: 0.6,
+            x: { duration: 1 }
+          }}>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto mt-5 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 pt-10 sm:mt-5 sm:pt-5 lg:mx-0 lg:max-w-none lg:grid-cols-1">
+          <div className="mx-auto mt-5 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 pt-10 sm:mt-5 sm:pt-5 lg:mx-0 lg:max-w-none lg:grid-cols-2">
            { post && 
             <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
                <div className=" text-3xl italic mb-2">
@@ -68,11 +75,14 @@ export default function CardRecentPost({ post }: { post: {
            
          </article>
            }
+           <div className=" pt-10">
+            <FadeTextDemo text1="Pour vous informer" text2="Toujours dans l'actu" text3="Etre informer" text4="Vie goût" />
+           </div>
              
             
           </div>
         </div>
-      </div> : <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-11">
+      </motion.div> : <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-11">
       <span className="relative flex h-3 w-full ml-6">
     <span className="animate-ping  absolute h-full w-[200px] rounded-full bg-sky-400 opacity-75 mb-3 p-1">chargement...</span>
     <span className="relative inline-flex rounded-full  h-3 w-10 bg-sky-500 p-1 opacity-60"></span>

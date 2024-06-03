@@ -4,9 +4,11 @@ import { getRecentPost } from "@/action/getrecentpost";
 import { auth } from "@/auth";
 import Card from "@/components/home/card";
 import CardRecentPost from "@/components/home/recentpost";
+import { PaginationDemo } from "@/components/ui/paginationdemo";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { date } from "zod";
+import { motion } from "framer-motion"
 
 // Définir le type des données des publications
 type Post ={
@@ -70,12 +72,18 @@ console.log(post,"king")
   return (
     <main className="md max-w-[1100px] mx-auto">
       {/* Utiliser la méthode map pour parcourir chaque publication */}
-      <Suspense fallback={<div className=" text-red-500">1234</div>}>
-         <CardRecentPost post={recentpost}/>
-        </Suspense>
+      <motion.div initial={{x:100}} animate={{ x:0 }} transition={{
+  ease: "linear",
+  duration: 2,
+  x: { duration: 1 }
+}}>
+<CardRecentPost post={recentpost}/>
+      </motion.div>
       <Card posts={post}/>
-      
-     
+      <div className=" mt-5 mb-3">
+         <PaginationDemo/>
+      </div>
+    
     </main>
   );
 }

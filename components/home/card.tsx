@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link";
 import { date } from "zod";
 import { SkeletonCard } from "../ui/skeletoncard";
+import { motion } from "framer-motion"
 
 export default function Card({ posts }: { posts: {
   id: string;
@@ -18,7 +19,11 @@ export default function Card({ posts }: { posts: {
    categories: { id: string; name: string; }[]
 }[] | null}) {
   return posts ? 
-  <div className="bg-white py-5 sm:py-5">
+  <motion.div className="bg-white py-5 sm:py-5" initial={{opacity:0,scale:0.8}} animate={{opacity:1,scale:1}} transition={{
+    ease: "linear",
+    duration: 0.5,
+    x: { duration: 0.5 }
+  }}>
      <div className=" text-3xl italic text-center">
           Toutes les Post
       </div>
@@ -71,7 +76,7 @@ export default function Card({ posts }: { posts: {
         ))}
       </div>
     </div>
-  </div> : <div className="mx-auto max-w-7xl px-6 lg:px-8">
+  </motion.div> : <div className="mx-auto max-w-7xl px-6 lg:px-8">
   <div className=" text-3xl italic text-center">
           Toutes les Post
       </div>

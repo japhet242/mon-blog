@@ -15,7 +15,8 @@ export async function  getPost() {
         },
         orderBy:{
             createdAt:"desc"
-        }
+        },
+        take:9
     })
     
 }

@@ -4,6 +4,7 @@ import { getOnePost } from "@/action/getonepost"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
 export default function Page({ params }: { params: { id: string } }) {
     const [post , SetPost ] = useState<{
@@ -27,7 +28,11 @@ export default function Page({ params }: { params: { id: string } }) {
     return post ? (
 
       post &&  
-      <div className="bg-white py-24 sm:py-12 px-12">
+      <motion.div className="bg-white py-24 sm:py-12 px-12" initial={{opacity:0,scale:1.1}} animate={{opacity:1,scale:1}} transition={{
+        ease: "linear",
+        duration: 0.5,
+        x: { duration: 0.1 }
+      }}>
       <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
       <div className="flex items-center gap-x-4 text-sm mt-2">
        <time dateTime={post.updatedAt.toString()} className="text-gray-500">
@@ -77,7 +82,7 @@ export default function Page({ params }: { params: { id: string } }) {
      </div>
      
    </article>
-   </div>
+   </motion.div>
 
     ) :<span className="relative flex h-3 w-full ml-6">
     <span className="animate-ping  absolute h-full w-[200px] rounded-full bg-sky-400 opacity-75 mb-3 p-2">chargement...</span>
