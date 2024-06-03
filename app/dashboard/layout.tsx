@@ -19,10 +19,10 @@ export default function RootLayout({
 }>) {
   return (
    
-      <div className={`${inter.className} container px-4`}>
-        <div>
+      <div className={`${inter.className} container px-4 `}>
+        <div className=" flex justify-between flex-wrap">
           <div className="md:flex justify-between">
-            <div className="bg-emerald-400 px-4 min-h-full md:fixed text-white">
+            <div className="bg-emerald-400 px-4 min-h-72 md:relative text-white">
               <div className="sm:flex">
                 <Button variant="ghost" size="lg" className="text-lg underline">
                   <TbCategoryPlus className="mx-2" />
@@ -37,10 +37,11 @@ export default function RootLayout({
               </div>
             </div>
           </div>
-        </div>
-        <div className="md:absolute right-0">
+           <div className=" relative mb-4">
           {children}
         </div>
+        </div>
+       
       </div>
     
   );
