@@ -1,12 +1,19 @@
 "use client"
 import { redirect, useSearchParams } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { Suspense, useCallback, useEffect, useState } from "react"
 import { valited } from "./verifield"
 import { AlertDestructive } from "@/components/ui/AlertDestructive"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export default function verifie() {
+export default function Verifie() {
+  return(
+    <Suspense>
+        <Verification/>
+    </Suspense>
+  )
+}
+function Verification() {
     const [error , setError]= useState<string | undefined>("")
     const paramsUrl = useSearchParams()
     const token =paramsUrl.get("token")

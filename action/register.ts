@@ -3,6 +3,9 @@ import prisma from "@/lib/db"
 import { registerSchema } from "@/schemas/zodSchema"
 import { z } from "zod"
 import bcrypt from "bcryptjs"
+import { generateToken } from "@/lib/token"
+import { sendEmail } from "@/lib/mail"
+
 
 export async function register(values: z.infer<typeof registerSchema>) {
     try {
@@ -42,7 +45,9 @@ export async function register(values: z.infer<typeof registerSchema>) {
 
         // Simuler l'envoi d'un e-mail de confirmation
         // await sendConfirmationEmail(email)
-
+        const tokengenerate = await generateToken(email)
+        await sendEmail({email,token:tokengenerate.token})
+        
         return { success: "Un message avec un lien de confirmation vous a été envoyé par mail. Veuillez suivre ce lien pour activer votre compte." }
     } catch (err) {
         console.error("Erreur lors de l'enregistrement :", err)

@@ -62,7 +62,7 @@ export default function CardRecentPost({ post }: { post: {
              <div>
                {post.categories.map(date=>{
                  return(
-                   <div className="rounded-sm p-2 text-white" style={{ backgroundColor: randomColor()}}>
+                   <div key={date.id} className="rounded-sm p-2 text-white" style={{ backgroundColor: randomColor()}}>
                      {date.name}
                    </div>
                  )

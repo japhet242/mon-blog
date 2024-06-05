@@ -20,6 +20,7 @@ import { useState, useTransition } from "react"
 import { AlertDestructive } from "../ui/AlertDestructive"
 import { AlertSucces } from "../ui/AlertSucces"
 import { useSearchParams } from "next/navigation"
+import Link from "next/link"
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition();
@@ -73,6 +74,12 @@ export function LoginForm() {
             </FormItem>
           )}
         />
+        <div>
+          <Button variant="link" className=" text-blue-600">
+          <Link href="/auth/reset"> mot de passe oublier</Link>
+        </Button>
+        </div>
+        
         <AlertDestructive message={paramsUrl==="OAuthAccountNotLinked"?"un compte existe deja avec se même email esseye avec un autre réseaux social":error}/>
         <AlertSucces message={succes}/>
         <Button type="submit">Se connecter</Button>

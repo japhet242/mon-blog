@@ -45,19 +45,21 @@ const [session ,setSession] = useState<string|undefined|null>()
   // Déclarer l'état pour les publications
   const [post, setPost] = useState<Post[] | null>(null);
   const [recentpost, setRecentPost] = useState<recentPost | null>(null)
-
+  const [currnetPage, setCurrentpage]= useState<number>(1)
+  const [totalPage, setTotalPage]= useState<number>(1)
   // Utiliser useRouter pour accéder à l'objet routeur Next.js
   const router = useRouter();
 
   // Définir la fonction pour récupérer les publications
-  const save = async () => {
+  const save = async (page:number) => {
     try {
       // Appeler la fonction getPost pour récupérer les publications
-      const data = await getPost();
+      const {posts,currentPage,totalPage,totalPosts} = await getPost(page);
       const recent = await getRecentPost()
       // Mettre à jour l'état des publications avec les données récupérées
       setRecentPost(recent)
-      setPost(data);
+      setPost(posts);
+      setTotalPage(totalPage)
     } catch (error) {
       console.error("Une erreur s'est produite lors de la récupération des publications :", error);
     }
@@ -65,8 +67,12 @@ const [session ,setSession] = useState<string|undefined|null>()
 
   // Utiliser useEffect pour exécuter la fonction save une fois que le composant est monté
   useEffect(() => {
-    save();
-  }, []);
+    save(currnetPage);
+  }, [currnetPage]);
+
+  const handleCurrentpage= (page:number)=>{
+        setCurrentpage(page)
+  }
 console.log(post,"king")
   // Afficher les publications dans le composant
   return (
@@ -80,8 +86,8 @@ console.log(post,"king")
 <CardRecentPost post={recentpost}/>
       </motion.div>
       <Card posts={post}/>
-      <div className=" mt-5 mb-3">
-         <PaginationDemo/>
+      <div className=" mt-5 mb-3" >
+         <PaginationDemo handleChange={handleCurrentpage} currentpage={currnetPage} totalpage={totalPage}/>
       </div>
     
     </main>

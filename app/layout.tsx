@@ -6,6 +6,9 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster" 
 import { FooterLayout } from "@/components/home/footerLayout";
+import { Sidbar } from "@/components/sidbar/sidbar";
+import { SessionProvider } from "next-auth/react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -15,25 +18,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-[700px] `}>
+       <SessionProvider>
       <NextSSRPlugin
-          /**
-           * The `extractRouterConfig` will extract **only** the route configs
-           * from the router to prevent additional information from being
-           * leaked to the client. The data passed to the client is the same
-           * as if you were to fetch `/api/uploadthing` directly.
-           */
-          routerConfig={extractRouterConfig(ourFileRouter)}
-        />
-      <main>{children}</main>
-      
+       routerConfig={extractRouterConfig(ourFileRouter)}
+        /> 
+        <div>
+          <Sidbar />
+        </div>
+      <main className=" pt-20">{children}</main>
         <Toaster />
         <FooterLayout/>
+        </SessionProvider>
         </body>
         
     </html>

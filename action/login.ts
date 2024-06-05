@@ -27,7 +27,7 @@ try {
    const connected = await signIn("credentials",{
        password,
        email,
-       redirectTo:"/settings"
+       redirectTo:"/"
     })
     return {succes:"email envoyer"}
 } catch (error) {

@@ -2,6 +2,7 @@
  
 import Link from "next/link"
 import { useParams, useSearchParams } from "next/navigation"
+import { Suspense } from "react"
  
 enum Error {
   Configuration = "Configuration",
@@ -17,10 +18,18 @@ const errorMap = {
 }
  
 export default function AuthErrorPage() {
-  const search = useSearchParams()
-  const error = search.get("error") as Error
  
   return (
+    <Suspense>
+      <Authwrapper/>
+    </Suspense>
+  )
+  
+}
+function Authwrapper() {
+  const search = useSearchParams()
+  const error = search.get("error") as Error
+  return  (
     <div className="flex flex-col items-center justify-center w-full h-screen">
       <Link
         href="/auth/login"

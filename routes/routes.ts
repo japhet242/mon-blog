@@ -5,10 +5,14 @@
 
 export const publicRoute = [
     "/",
+    "/apropos",
     "/error",
-    "/api/uploadthing"
+    "/api/uploadthing",
+    "/auth/reset",
+    "/projets"
+    
 ]
-
+export const postone = "/post/"
 /**
  * route d'authentification 
  * @type {Array}

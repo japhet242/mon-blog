@@ -40,7 +40,7 @@ export function RegisterForm() {
     startTransition(() => {
       register(values).then(e=>{
       setError(e?.error)
-      setSucces(e?.succes)
+      setSucces(e?.success)
     })
     });
   }

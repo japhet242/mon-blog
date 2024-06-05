@@ -59,9 +59,9 @@ export default function Card({ posts }: { posts: {
                 {post.updatedAt.toDateString()}
               </time>
               <div>
-                {post.categories.map(date=>{
+                {post.categories.map((date,index)=>{
                   return(
-                    <div className="rounded-sm p-2 text-white" style={{ backgroundColor: randomColor()}}>
+                    <div key={index} className="rounded-sm p-2 text-white" style={{ backgroundColor: randomColor()}}>
                       {date.name}
                     </div>
                   )

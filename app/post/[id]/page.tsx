@@ -23,7 +23,7 @@ export default function Page({ params }: { params: { id: string } }) {
           getOnePost(params.id).then(data=>{
             SetPost(data)
           })
-      },[])
+      },[params.id])
 
     return post ? (
 
